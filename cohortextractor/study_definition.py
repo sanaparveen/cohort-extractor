@@ -26,11 +26,10 @@ logger = structlog.get_logger()
 
 
 class StudyDefinition:
-
     backend = None
 
     def __init__(
-        self, population, default_expectations=None, index_date=None, **covariates
+            self, population, default_expectations=None, index_date=None, **covariates
     ):
         covariates["population"] = population
         self._original_covariates = process_covariate_definitions(covariates)
@@ -91,7 +90,7 @@ class StudyDefinition:
             self.backend.truncate_sql_logs = truncate
 
     def to_file(
-        self, filename, expectations_population=False, dummy_data_file=None, **kwargs
+            self, filename, expectations_population=False, dummy_data_file=None, **kwargs
     ):
         if expectations_population:
             df = self.make_df_from_expectations(expectations_population)
@@ -160,9 +159,9 @@ class StudyDefinition:
     @staticmethod
     def get_backend_for_database_url(database_url):
         if (
-            database_url.startswith("mssql://")
-            or database_url.startswith("mssql+pyodbc://")
-            or database_url.startswith("mssql+pymssql")
+                database_url.startswith("mssql://")
+                or database_url.startswith("mssql+pyodbc://")
+                or database_url.startswith("mssql+pymssql")
         ):
 
             from .tpp_backend import TPPBackend
@@ -171,8 +170,16 @@ class StudyDefinition:
         # presto:// is now legacy and replaced with trino://
         # presto:// is included for backwards compatibilty only and can be
         # removed in future.
+        elif (
+                database_url.startswith("mssql-assignment_backend://")
+                or database_url.startswith("mssql-assignment_backend+pyodbc://")
+                or database_url.startswith("mssql-assignment_backend+pymssql")
+        ):
+            from .assignment_backend import AssignmentBackend
+
+            return AssignmentBackend
         elif database_url.startswith("trino://") or database_url.startswith(
-            "presto://"
+                "presto://"
         ):
             from .emis_backend import EMISBackend
 
@@ -260,8 +267,8 @@ class StudyDefinition:
             # categorical, so possibly we need a categorical int type to handle
             # these.
             if kwargs.get("returning") in (
-                "index_of_multiple_deprivation",
-                "rural_urban_classification",
+                    "index_of_multiple_deprivation",
+                    "rural_urban_classification",
             ):
                 column_type = "str"
 
@@ -504,11 +511,11 @@ class StudyDefinition:
         return columns
 
     def validate_category_expectations(
-        self,
-        codelist=None,
-        return_expectations=None,
-        category_definitions=None,
-        **kwargs,
+            self,
+            codelist=None,
+            return_expectations=None,
+            category_definitions=None,
+            **kwargs,
     ):
         defined = set(return_expectations["category"]["ratios"].keys())
         if category_definitions:

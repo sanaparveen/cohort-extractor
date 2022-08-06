@@ -1,0 +1,36 @@
+-- Query for age
+SELECT * INTO #age FROM (
+        SELECT
+          PatientAssignmentTestNewTable.Patient_ID AS patient_id,
+          CASE WHEN
+             dateadd(year, datediff (year, DateOfBirth, '20200101'), DateOfBirth) > '20200101'
+          THEN
+             datediff(year, DateOfBirth, '20200101') - 1
+          ELSE
+             datediff(year, DateOfBirth, '20200101')
+          END AS value
+        FROM PatientAssignmentTestNewTable --custom table which we have created
+
+        ) t
+GO
+
+-- Query for population
+SELECT * INTO #population FROM (
+        SELECT Patient_ID AS patient_id, 1 AS value
+        FROM Patient
+        ) t
+GO
+
+
+        -- Join all columns for final output
+        SELECT
+          #population.patient_id AS [patient_id],
+          ISNULL(#age.value, 0) AS [age]
+        FROM
+          #population
+          LEFT JOIN #age ON #age.patient_id = #population.patient_id
+        WHERE ISNULL(#population.value, 0) = 1
+
+2022-08-06 17:29:22 [info     ] cohortextractor-stats          [cohortextractor.log_utils] output_column_count=3 table_count=2 table_joins_count=1
+2022-08-06 17:29:22 [info     ] cohortextractor-stats          [cohortextractor.log_utils] variable_count=2
+2022-08-06 17:29:22 [info     ] cohortextractor-stats          [cohortextractor.log_utils] variables_using_codelist_count=0
