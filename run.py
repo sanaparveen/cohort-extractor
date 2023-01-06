@@ -2,7 +2,7 @@ import os
 from cohortextractor import StudyDefinition, patients
 
 os.environ[
-    'DATABASE_URL'] = 'mssql-assignment_backend+pyodbc://sa:reallyStrongPwd123@localhost:1433' \
+    'DATABASE_URL'] = 'mssql+pyodbc://sa:SanaParveen1234@localhost:1433' \
                       '?driver=ODBC+Driver+17+for+SQL+Server'
 # configured custom ms sql backend
 study = StudyDefinition(
@@ -20,7 +20,9 @@ study = StudyDefinition(
     population=patients.all(),
 
     # define the study variables
-    age=patients.age_as_of("index_date")
+    age=patients.age_as_of("index_date"),
+
+    # id=patients.donors_choose_with_is_exciting_and_fully_funded(None)
 
     # more variables ...
 )
@@ -28,3 +30,5 @@ print(
     study.to_sql())  # this method is lazily evaluated, it wont actually
 # read the data until and unless we call some action methods. `to_sql` only generates the raw sql queries which needs to
 # be executed on any given backend
+
+print(study.to_file("/Users/sanaparveen/Desktop/JOB/GIT/cohort-extractor/temp1.csv"))

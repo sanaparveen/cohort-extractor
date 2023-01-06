@@ -136,6 +136,31 @@ def date_of_birth(
     return "date_of_birth", locals()
 
 
+def donors_choose_with_is_exciting_and_fully_funded(
+    # Required keyword
+    return_expectations=None,
+):
+    """
+    All donors choose project id with is exciting and fully funded
+
+    Returns:
+        list: of project id
+
+    Example:
+
+        This creates a variable "registered" with patient returning an integer of `1` if patient registered
+        at date. Patients who are not registered return an integer of `0`:
+
+            registered=patients.registered_as_of(
+                "2020-03-01",
+                return_expectations={"incidence": 0.98}
+            )
+
+    """
+    return "donors_choose_with_is_exciting_and_fully_funded", locals()
+
+
+
 def registered_as_of(
     reference_date,
     # Required keyword

@@ -41,7 +41,8 @@ class DonorsChooseBackend:
     _current_column_name = None
 
     def __init__(self, database_url, covariate_definitions, temporary_database=None):
-        self.database_url = database_url
+        self.database_url = database_url.replace("mssql-donorschoose_backend", "")
+        # self.database_url = database_url
         self.covariate_definitions = covariate_definitions
         self.temporary_database = temporary_database
         self.next_temp_table_id = 1
@@ -758,6 +759,19 @@ class DonorsChooseBackend:
         WHERE (ABS(CAST(
         (BINARY_CHECKSUM(*) *
         RAND()) as int)) % 100) < {quote(percent)}
+        """
+
+    def donors_choose_with_is_exciting_and_fully_funded(
+            self, returning=None):
+        return """
+        SELECT
+          id as projectid
+        FROM
+          DonorsChooseOutcomes
+        WHERE
+          DonorsChooseOutcomes.is_exciting = 't'
+          AND
+          DonorsChooseOutcomes.fully_funded = 't'
         """
 
     def patients_most_recent_bmi(

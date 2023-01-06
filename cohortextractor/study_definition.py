@@ -158,32 +158,32 @@ class StudyDefinition:
 
     @staticmethod
     def get_backend_for_database_url(database_url):
-        if (
-                database_url.startswith("mssql://")
-                or database_url.startswith("mssql+pyodbc://")
-                or database_url.startswith("mssql+pymssql")
-        ):
-
-            from .tpp_backend import TPPBackend
-
-            return TPPBackend
+        # if (
+        #         database_url.startswith("mssql://")
+        #         or database_url.startswith("mssql+pyodbc://")
+        #         or database_url.startswith("mssql+pymssql")
+        # ):
+        #
+        #     from .tpp_backend import TPPBackend
+        #
+        #     return TPPBackend
         # presto:// is now legacy and replaced with trino://
         # presto:// is included for backwards compatibilty only and can be
         # removed in future.
-        elif (
-                database_url.startswith("mssql-assignment_backend://")
-                or database_url.startswith("mssql-assignment_backend+pyodbc://")
-                or database_url.startswith("mssql-assignment_backend+pymssql")
+        # el
+        if (
+                database_url.startswith("mssql://")
+                or database_url.startswith("mssql://")
+                or database_url.startswith("mssql+pyodbc")
         ):
-            from .assignment_backend import AssignmentBackend
-
-            return AssignmentBackend
-        elif database_url.startswith("trino://") or database_url.startswith(
-                "presto://"
-        ):
-            from .emis_backend import EMISBackend
-
-            return EMISBackend
+            from .donorschoose_backend import DonorsChooseBackend
+            return DonorsChooseBackend
+        # elif database_url.startswith("trino://") or database_url.startswith(
+        #         "presto://"
+        # ):
+        #     from .emis_backend import EMISBackend
+        #
+        #     return EMISBackend
         else:
             raise ValueError(f"No matching backend found for {database_url}")
 
